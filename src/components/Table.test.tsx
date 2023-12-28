@@ -3,6 +3,7 @@ import axios from 'axios';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Table } from './Table';
+import { User } from '../types/users';
 
 jest.mock('../types/users', () => ({
   User: jest.fn(),
@@ -20,7 +21,7 @@ const testData = [
 
 describe('Table component', () => {
   it('renders table with data and pagination', () => {
-    render(<Table data={testData} />);
+    render(<Table data={testData as User[]} />);
 
     expect(screen.getByText('ID')).toBeInTheDocument();
     expect(screen.getByText('First Name')).toBeInTheDocument();
