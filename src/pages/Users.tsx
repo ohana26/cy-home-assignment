@@ -6,6 +6,17 @@ import { Table } from '../components/Table';
 const Users: React.FC = () => {
   const [data, setData] = useState<User[]>([]);
 
+  const handleDeleteItem = (user: User): void => {
+    axios.get<User[]>('https://dummyjson.com/users') //api request not working
+      .then(response => {
+        const updatedData = data.filter(item => item.id !== user.id);
+        setData(updatedData);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  };
+
   useEffect(() => {
     axios.get('https://dummyjson.com/users')
       .then(response => {
@@ -18,7 +29,7 @@ const Users: React.FC = () => {
 
   return (
     <div>
-      <Table data={data}></Table>
+      <Table data={data} onDeleteItem={handleDeleteItem}></Table>
     </div>
   );
 };

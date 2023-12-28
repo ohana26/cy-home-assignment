@@ -14,12 +14,13 @@ import './Table.css';
 
 interface TableProps {
   data: User[];
+  onDeleteItem?: (user: User) => void;
 }
 
 const itemsPerPage = 10;
 const pagesToShow = 5;
 
-export const Table: React.FC<TableProps> = ({ data = [] }) => {
+export const Table: React.FC<TableProps> = ({ data = [], onDeleteItem = () => {} }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const indexOfLastItem: number = currentPage * itemsPerPage;
@@ -49,21 +50,25 @@ export const Table: React.FC<TableProps> = ({ data = [] }) => {
         <MUITable>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
               <TableCell>First Name</TableCell>
               <TableCell>Last Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Phone</TableCell>
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {currentItems.map((item) => (
               <TableRow key={item.id}>
-                <TableCell>{item.id}</TableCell>
                 <TableCell>{item.firstName}</TableCell>
                 <TableCell>{item.lastName}</TableCell>
                 <TableCell>{item.email}</TableCell>
                 <TableCell>{item.phone}</TableCell>
+                <TableCell>
+                  <Button onClick={() => { onDeleteItem(item) }} >
+                    Delete
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -90,6 +95,6 @@ export const Table: React.FC<TableProps> = ({ data = [] }) => {
           Next
         </Button>
       </div>
-    </div>
+    </div >
   );
 };
