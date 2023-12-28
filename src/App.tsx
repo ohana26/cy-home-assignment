@@ -1,6 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom';
-import HomePage from './pages/Home';
+import { BrowserRouter as Router, Routes, Route, Navigate, } from 'react-router-dom';
 import UsersPage from './pages/Users';
 import { MUIAppBar } from './components/MUIAppBar';
 
@@ -11,7 +10,7 @@ const App: React.FC = () => {
       <Router>
         <MUIAppBar />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<Navigate to="/users" replace />} />
           <Route path="/users" element={<UsersPage />} />
         </Routes>
       </Router>
