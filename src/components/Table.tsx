@@ -30,9 +30,7 @@ export const Table: React.FC<TableProps> = ({ data = [], onDeleteItem = () => {}
 
   const filteredData = data.filter((user) =>
     user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.phone.toLowerCase().includes(searchTerm.toLowerCase())
+    user.lastName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const indexOfLastItemPerPage: number = currentPage * itemsPerPage;
