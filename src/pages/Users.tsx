@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { Alert } from '@mui/material';
 import { User } from '../types/users';
 import { Table } from '../components/Table';
-import { Alert } from '@mui/material';
+import userService from '../services/userService';
 
 const Users: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -15,41 +15,41 @@ const Users: React.FC = () => {
     }, 5000);
   };
 
-  const handleAddItem = (user: User): void => {
-    console.log(user)
-    axios.post<User[]>('https://dummyjson.com/users/add')
-      .then(response => {
-        setData([user, ...data]);
-      })
-      .catch(error => {
-        showError(`Error while adding user ${error}`)
-      });
+  const handleAddItem = async (user: User): Promise<void> => {
+    try {
+      const addedUser = await userService.addUser(user);
+      const updatedData = await userService.getUsers();
+      setData([addedUser, ...updatedData]);
+    } catch (error) {
+      showError(`Error while adding user: ${error}`);
+    }
   };
 
-  const handleDeleteItem = (user: User): void => {
-    axios.get<User[]>('https://dummyjson.com/users') //api request not working
-      .then(response => {
-        const updatedData = data.filter(item => item.id !== user.id);
-        setData(updatedData);
-      })
-      .catch(error => {
-        showError(`Error while deleting user ${error}`)
-      });
+  const handleDeleteItem = async (user: User): Promise<void> => {
+    try {
+      const updatedData = await userService.deleteUser(user.id);
+      setData(updatedData);
+    } catch (error) {
+      showError(`Error while deleting user: ${error}`);
+    }
   };
 
   useEffect(() => {
-    axios.get('https://dummyjson.com/users')
-      .then(response => {
-        setData(response.data.users);
-      })
-      .catch(error => {
-        showError(`Error while fetching users ${error}`)
-      });
+    const fetchData = async (): Promise<void> => {
+      try {
+        const users = await userService.getUsers();
+        setData(users);
+      } catch (error) {
+        showError(`Error while fetching users: ${error}`);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
     <div>
-      {errorMessage ? (<Alert severity="error">{errorMessage}</Alert>) : null}
+      {errorMessage ? <Alert severity="error">{errorMessage}</Alert> : null}
       <Table data={data} onDeleteItem={handleDeleteItem} onAddItem={handleAddItem}></Table>
     </div>
   );
