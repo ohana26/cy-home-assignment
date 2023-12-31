@@ -35,9 +35,9 @@ export const Table: React.FC<TableProps> = ({ data = [], onDeleteItem = () => {}
     user.phone.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const indexOfLastItem: number = currentPage * itemsPerPage;
-  const indexOfFirstItem: number = indexOfLastItem - itemsPerPage;
-  const currentItems: User[] = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const indexOfLastItemPerPage: number = currentPage * itemsPerPage;
+  const indexOfFirstItemPerPage: number = indexOfLastItemPerPage - itemsPerPage;
+  const currentItemsPerPage: User[] = filteredData.slice(indexOfFirstItemPerPage, indexOfLastItemPerPage);
 
   const totalPages: number = Math.ceil(filteredData.length / itemsPerPage);
 
@@ -100,7 +100,7 @@ export const Table: React.FC<TableProps> = ({ data = [], onDeleteItem = () => {}
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentItems.map((item) => (
+            {currentItemsPerPage.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.firstName}</TableCell>
                 <TableCell>{item.lastName}</TableCell>
