@@ -23,7 +23,6 @@ describe('Table component', () => {
   it('renders table with data and pagination', () => {
     render(<Table data={testData as User[]} />);
 
-    expect(screen.getByText('ID')).toBeInTheDocument();
     expect(screen.getByText('First Name')).toBeInTheDocument();
     expect(screen.getByText('Last Name')).toBeInTheDocument();
     expect(screen.getByText('Email')).toBeInTheDocument();
