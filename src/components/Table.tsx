@@ -11,17 +11,20 @@ import {
   Button,
 } from '@mui/material';
 import './Table.css';
+import AddUserForm from './AddUserForm';
 
 interface TableProps {
   data: User[];
   onDeleteItem?: (user: User) => void;
+  onAddItem?: (user: User) => void;
 }
 
 const itemsPerPage = 10;
 const pagesToShow = 5;
 
-export const Table: React.FC<TableProps> = ({ data = [], onDeleteItem = () => {} }) => {
+export const Table: React.FC<TableProps> = ({ data = [], onDeleteItem = () => {}, onAddItem = () => {} }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const indexOfLastItem: number = currentPage * itemsPerPage;
   const indexOfFirstItem: number = indexOfLastItem - itemsPerPage;
@@ -44,8 +47,25 @@ export const Table: React.FC<TableProps> = ({ data = [], onDeleteItem = () => {}
   const startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
   const endPage = Math.min(startPage + pagesToShow - 1, totalPages);
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = (user: User) => {
+    setIsModalOpen(false);
+    if (user) {
+      onAddItem(user)
+    }
+  };
+
   return (
     <div className="table-container">
+      <div className='add-user-container'>
+        <Button onClick={handleOpenModal} variant="contained" color="primary">
+          Add user
+        </Button>
+      </div>
+      <AddUserForm open={isModalOpen} handleClose={handleCloseModal} />
       <TableContainer component={Paper}>
         <MUITable>
           <TableHead>

@@ -7,3 +7,9 @@
   justify-content: center;
   margin-top: 16px;
 }
+
+.add-user-container {
+  display: flex;
+  justify-content: end;
+  margin: 16px;
+}

@@ -11,7 +11,7 @@ jest.mock('../types/users', () => ({
 
 const testData = [
   {
-    id: 1,
+    id: "1",
     firstName: 'John',
     lastName: 'Doe',
     email: 'john.doe@example.com',
