@@ -122,8 +122,8 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ open, handleClose = () => {} 
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel}>Cancel</Button>
-        <Button onClick={handleAddUser} color="primary">
+        <Button onClick={handleCancel} style={{ textTransform: 'none' }}>Cancel</Button>
+        <Button onClick={handleAddUser} color="primary" style={{ textTransform: 'none' }}>
           Add User
         </Button>
       </DialogActions>

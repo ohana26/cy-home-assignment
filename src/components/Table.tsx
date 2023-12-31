@@ -73,7 +73,8 @@ export const Table: React.FC<TableProps> = ({ data = [], onDeleteItem = () => {}
   return (
     <div className="table-container">
       <div className='add-user-container'>
-        <Button onClick={handleOpenModal} variant="contained" color="primary">
+        <Button onClick={handleOpenModal} variant="contained" color="primary" style={{ textTransform: 'none' }}
+        >
           Add user
         </Button>
       </div>

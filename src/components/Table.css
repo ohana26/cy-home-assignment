@@ -13,4 +13,5 @@
   display: flex;
   justify-content: end;
   margin: 16px;
+  padding-right: 16px;
 }
