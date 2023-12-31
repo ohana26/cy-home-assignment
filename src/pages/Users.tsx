@@ -2,9 +2,18 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { User } from '../types/users';
 import { Table } from '../components/Table';
+import { Alert } from '@mui/material';
 
 const Users: React.FC = () => {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [data, setData] = useState<User[]>([]);
+
+  const showError = (errorMessage: string) => {
+    setErrorMessage(errorMessage);
+    setTimeout(() => {
+      setErrorMessage(null);
+    }, 5000);
+  };
 
   const handleAddItem = (user: User): void => {
     console.log(user)
@@ -13,7 +22,7 @@ const Users: React.FC = () => {
         setData([user, ...data]);
       })
       .catch(error => {
-        console.error('Error fetching data:', error);
+        showError(`Error while adding user ${error}`)
       });
   };
 
@@ -24,7 +33,7 @@ const Users: React.FC = () => {
         setData(updatedData);
       })
       .catch(error => {
-        console.error('Error fetching data:', error);
+        showError(`Error while deleting user ${error}`)
       });
   };
 
@@ -34,12 +43,13 @@ const Users: React.FC = () => {
         setData(response.data.users);
       })
       .catch(error => {
-        console.error('Error fetching data:', error);
+        showError(`Error while fetching users ${error}`)
       });
   }, []);
 
   return (
     <div>
+      {errorMessage ? (<Alert severity="error">{errorMessage}</Alert>) : null}
       <Table data={data} onDeleteItem={handleDeleteItem} onAddItem={handleAddItem}></Table>
     </div>
   );
