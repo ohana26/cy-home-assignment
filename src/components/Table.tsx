@@ -9,6 +9,7 @@ import {
   TableRow,
   Paper,
   Button,
+  TextField,
 } from '@mui/material';
 import './Table.css';
 import AddUserForm from './AddUserForm';
@@ -25,12 +26,20 @@ const pagesToShow = 5;
 export const Table: React.FC<TableProps> = ({ data = [], onDeleteItem = () => {}, onAddItem = () => {} }) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+
+  const filteredData = data.filter((user) =>
+    user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.phone.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const indexOfLastItem: number = currentPage * itemsPerPage;
   const indexOfFirstItem: number = indexOfLastItem - itemsPerPage;
-  const currentItems: User[] = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems: User[] = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages: number = Math.ceil(data.length / itemsPerPage);
+  const totalPages: number = Math.ceil(filteredData.length / itemsPerPage);
 
   const handlePageChange = (pageNumber: number): void => {
     setCurrentPage(pageNumber);
@@ -54,8 +63,13 @@ export const Table: React.FC<TableProps> = ({ data = [], onDeleteItem = () => {}
   const handleCloseModal = (user: User) => {
     setIsModalOpen(false);
     if (user) {
-      onAddItem(user)
+      onAddItem(user);
     }
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(1);
   };
 
   return (
@@ -65,6 +79,14 @@ export const Table: React.FC<TableProps> = ({ data = [], onDeleteItem = () => {}
           Add user
         </Button>
       </div>
+      <TextField
+        label="Search"
+        variant="outlined"
+        value={searchTerm}
+        onChange={handleSearch}
+        className="search-bar"
+        sx={{ marginBottom: '16px' }}
+      />
       <AddUserForm open={isModalOpen} handleClose={handleCloseModal} />
       <TableContainer component={Paper}>
         <MUITable>
@@ -115,6 +137,6 @@ export const Table: React.FC<TableProps> = ({ data = [], onDeleteItem = () => {}
           Next
         </Button>
       </div>
-    </div >
+    </div>
   );
 };
